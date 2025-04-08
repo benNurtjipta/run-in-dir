@@ -1,36 +1,44 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-const vscode = require('vscode');
-
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+// File: extension.js
+const vscode = require("vscode");
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
+  const runDevCommand = vscode.commands.registerCommand(
+    "run-in-dir.runDev",
+    async () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        vscode.window.showErrorMessage("No active file to run from.");
+        return;
+      }
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "run-in-dir" is now active!');
+      const fileUri = editor.document.uri;
+      const fileDir = vscode.Uri.joinPath(fileUri, "..").fsPath;
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('run-in-dir.helloWorld', function () {
-		// The code you place here will be executed every time your command is executed
+      const terminal = vscode.window.createTerminal({ cwd: fileDir });
+      terminal.show();
+      terminal.sendText("npm run dev");
+    }
+  );
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from run-in-dir!');
-	});
+  context.subscriptions.push(runDevCommand);
 
-	context.subscriptions.push(disposable);
+  const button = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Left,
+    100
+  );
+  button.text = "$(play) Dev";
+  button.tooltip = "Run npm run dev in current file directory";
+  button.command = "run-in-dir.runDev";
+  button.show();
+  context.subscriptions.push(button);
 }
 
-// This method is called when your extension is deactivated
 function deactivate() {}
 
 module.exports = {
-	activate,
-	deactivate
-}
+  activate,
+  deactivate,
+};
