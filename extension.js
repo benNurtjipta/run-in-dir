@@ -1,4 +1,6 @@
 const vscode = require("vscode");
+const path = require("path");
+const fs = require("fs");
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -14,22 +16,10 @@ function activate(context) {
       }
 
       const fileUri = editor.document.uri;
-      // const workspaceFolder = vscode.workspace.getWorkspaceFolder(fileUri);
-
-      // if (!workspaceFolder) {
-      //   vscode.window.showErrorMessage("No workspace folder found.");
-      //   return;
-      // }
-
-      // const rootPath = workspaceFolder.uri.fsPath;
-
-      const path = require("path");
-      const fs = require("fs");
 
       function findNearestPackageJson(startPath) {
         let dir = startPath;
         while (dir !== path.dirname(dir)) {
-          // stop at filesystem root
           const pkgPath = path.join(dir, "package.json");
           if (fs.existsSync(pkgPath)) {
             return dir;
@@ -52,10 +42,18 @@ function activate(context) {
       const config = vscode.workspace.getConfiguration("run-in-dir");
       const defaultCommand = config.get("defaultCommand") || "npm run dev";
 
-      const terminal = vscode.window.createTerminal({ cwd: projectRoot });
+      let terminal = vscode.window.terminals.find(
+        (t) => t.name === "Run In Dir"
+      );
+
+      if (!terminal) {
+        terminal = vscode.window.createTerminal({
+          name: "Run In Dir",
+        });
+      }
 
       terminal.show();
-      terminal.sendText(defaultCommand);
+      terminal.sendText(`cd "${projectRoot}" && ${defaultCommand}`);
     }
   );
 

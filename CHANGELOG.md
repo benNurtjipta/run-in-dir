@@ -14,6 +14,7 @@
 ### Fixed
 
 - now really starts in the root folder of the project...
+- uses the same terminal every time it runs
 
 ## [0.0.2] - 2025-04-08
 
