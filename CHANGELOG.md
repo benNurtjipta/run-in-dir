@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.0.4] - 2025-04-08
+
+### Fixed
+
+- button label updates on settings change
+
 ## [0.0.3] - 2025-04-08
 
 ### Added
