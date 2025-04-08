@@ -79,6 +79,17 @@ function activate(context) {
   button.show();
 
   context.subscriptions.push(button);
+
+  vscode.workspace.onDidChangeConfiguration((e) => {
+    if (e.affectsConfiguration("run-in-dir.defaultCommand")) {
+      const newCommand = vscode.workspace
+        .getConfiguration("run-in-dir")
+        .get("defaultCommand");
+
+      button.text =
+        newCommand === "npm start" ? "$(play) Start" : "$(play) Dev";
+    }
+  });
 }
 
 function deactivate() {}
