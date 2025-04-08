@@ -7,3 +7,7 @@ Just a little extension that:
 - opens a terminal in that folder
 - run the "npm run dev"
 - AND adds a button in status bar to do this on click
+
+## 🔗 Repository
+
+[GitHub - run-in-dir](https://github.com/benNurtjipta/run-in-dir)
