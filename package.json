@@ -25,7 +25,21 @@
         "command": "run-in-dir.runDev",
         "title": "Run npm dev in current folder"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Run In Dir",
+      "properties": {
+        "run-in-dir.defaultCommand": {
+          "type": "string",
+          "default": "npm run dev",
+          "enum": [
+            "npm run dev",
+            "npm start"
+          ],
+          "description": "Default npm command to run in the current file directory"
+        }
+      }
+    }
   },
   "scripts": {
     "lint": "eslint .",

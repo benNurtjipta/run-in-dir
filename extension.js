@@ -1,4 +1,3 @@
-// File: extension.js
 const vscode = require("vscode");
 
 /**
@@ -17,9 +16,12 @@ function activate(context) {
       const fileUri = editor.document.uri;
       const fileDir = vscode.Uri.joinPath(fileUri, "..").fsPath;
 
+      const config = vscode.workspace.getConfiguration("run-in-dir");
+      const defaultCommand = config.get("defaultCommand") || "npm run dev";
+
       const terminal = vscode.window.createTerminal({ cwd: fileDir });
       terminal.show();
-      terminal.sendText("npm run dev");
+      terminal.sendText(defaultCommand);
     }
   );
 
@@ -27,10 +29,10 @@ function activate(context) {
 
   const button = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Left,
-    1000
+    10000
   );
   button.text = "$(play) Dev";
-  button.tooltip = "Run npm run dev in current file directory";
+  button.tooltip = "Run configured npm script in current file directory";
   button.command = "run-in-dir.runDev";
   button.color = "#03EDF9";
   button.show();
