@@ -27,11 +27,12 @@ function activate(context) {
 
   const button = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Left,
-    100
+    1000
   );
   button.text = "$(play) Dev";
   button.tooltip = "Run npm run dev in current file directory";
   button.command = "run-in-dir.runDev";
+  button.color = "#03EDF9";
   button.show();
   context.subscriptions.push(button);
 }
