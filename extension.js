@@ -29,7 +29,7 @@ function activate(context) {
 
   const button = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Left,
-    10000
+    -1000
   );
   button.text = "$(play) Dev";
   button.tooltip = "Run configured npm script in current file directory";
