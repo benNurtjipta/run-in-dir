@@ -3,6 +3,10 @@
   "displayName": "Run in Dir",
   "description": "Run npm run dev from current file folder",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benNurtjipta/run-in-dir"
+  },
   "engines": {
     "vscode": "^1.99.0"
   },
