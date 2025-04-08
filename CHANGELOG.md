@@ -1,5 +1,20 @@
 # Change Log
 
+## [0.0.3] - 2025-04-08
+
+### Added
+
+- display button according to dev/start setting
+- extension icon
+
+### Changed
+
+- moved button further right
+
+### Fixed
+
+- now really starts in the root folder of the project...
+
 ## [0.0.2] - 2025-04-08
 
 ### Added

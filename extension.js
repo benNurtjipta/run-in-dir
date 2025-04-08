@@ -14,12 +14,19 @@ function activate(context) {
       }
 
       const fileUri = editor.document.uri;
-      const fileDir = vscode.Uri.joinPath(fileUri, "..").fsPath;
+      const workspaceFolder = vscode.workspace.getWorkspaceFolder(fileUri);
+
+      if (!workspaceFolder) {
+        vscode.window.showErrorMessage("No workspace folder found.");
+        return;
+      }
+
+      const rootPath = workspaceFolder.uri.fsPath;
 
       const config = vscode.workspace.getConfiguration("run-in-dir");
       const defaultCommand = config.get("defaultCommand") || "npm run dev";
 
-      const terminal = vscode.window.createTerminal({ cwd: fileDir });
+      const terminal = vscode.window.createTerminal({ cwd: rootPath });
       terminal.show();
       terminal.sendText(defaultCommand);
     }
@@ -31,11 +38,21 @@ function activate(context) {
     vscode.StatusBarAlignment.Left,
     -1000
   );
-  button.text = "$(play) Dev";
-  button.tooltip = "Run configured npm script in current file directory";
+
+  const config = vscode.workspace.getConfiguration("run-in-dir");
+  const defaultCommand = config.get("defaultCommand") || "npm run dev";
+
+  if (defaultCommand === "npm start") {
+    button.text = "$(play) Start";
+  } else {
+    button.text = "$(play) Dev";
+  }
+
+  button.tooltip = "Run configured npm script in project root";
   button.command = "run-in-dir.runDev";
   button.color = "#03EDF9";
   button.show();
+
   context.subscriptions.push(button);
 }
 
