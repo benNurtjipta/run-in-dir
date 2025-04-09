@@ -58,7 +58,14 @@ function activate(context) {
       }
 
       terminal.show();
-      terminal.sendText(`cd "${projectRoot}" && ${commandToRun}`);
+      const shell = vscode.env.shell;
+      const isPowerShell = shell && shell.toLowerCase().includes("powershell");
+
+      const cdCommand = isPowerShell
+        ? `Set-Location -Path "${projectRoot}"; ${commandToRun}`
+        : `cd "${projectRoot}" && ${commandToRun}`;
+
+      terminal.sendText(cdCommand);
     }
   );
 
