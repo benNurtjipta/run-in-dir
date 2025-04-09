@@ -4,6 +4,12 @@
 
 ### Added
 
+- variable commands in settings
+
+## [0.1.0] - 2025-04-09
+
+### Added
+
 - change button color in settings
 
 ## [0.0.4] - 2025-04-08
@@ -41,5 +47,4 @@
 ## [Unreleased]
 
 - select options on button click
-- variable commands in settings
 - multiple buttons
