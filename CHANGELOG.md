@@ -33,3 +33,8 @@
 - initial release
 
 ## [Unreleased]
+
+- select options on button click
+- variable commands in settings
+- multiple buttons
+-
