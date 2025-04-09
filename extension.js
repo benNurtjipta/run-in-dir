@@ -59,35 +59,36 @@ function activate(context) {
 
   context.subscriptions.push(runDevCommand);
 
+  const config = vscode.workspace.getConfiguration("run-in-dir");
+  const defaultCommand = config.get("defaultCommand") || "npm run dev";
+  const buttonColor = config.get("statusBarColor") || "#03EDF9";
+
   const button = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Left,
     -1000
   );
 
-  const config = vscode.workspace.getConfiguration("run-in-dir");
-  const defaultCommand = config.get("defaultCommand") || "npm run dev";
-
-  if (defaultCommand === "npm start") {
-    button.text = "$(play) Start";
-  } else {
-    button.text = "$(play) Dev";
-  }
-
+  button.text =
+    defaultCommand === "npm start" ? "$(play) Start" : "$(play) Dev";
   button.tooltip = "Run configured npm script in project root";
   button.command = "run-in-dir.runDev";
-  button.color = "#03EDF9";
+  button.color = buttonColor;
   button.show();
 
   context.subscriptions.push(button);
 
   vscode.workspace.onDidChangeConfiguration((e) => {
     if (e.affectsConfiguration("run-in-dir.defaultCommand")) {
-      const newCommand = vscode.workspace
-        .getConfiguration("run-in-dir")
-        .get("defaultCommand");
-
+      const updatedConfig = vscode.workspace.getConfiguration("run-in-dir");
+      const newCommand = updatedConfig.get("defaultCommand");
       button.text =
         newCommand === "npm start" ? "$(play) Start" : "$(play) Dev";
+    }
+
+    if (e.affectsConfiguration("run-in-dir.statusBarColor")) {
+      const updatedConfig = vscode.workspace.getConfiguration("run-in-dir");
+      const newColor = updatedConfig.get("statusBarColor") || "#03EDF9";
+      button.color = newColor;
     }
   });
 }

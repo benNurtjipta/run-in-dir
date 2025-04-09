@@ -38,6 +38,11 @@
             "npm start"
           ],
           "description": "Default npm command to run in the current file directory"
+        },
+        "run-in-dir.statusBarColor": {
+          "type": "string",
+          "default": "#03EDF9",
+          "description": "Button Color in HEX (e.g. #03EDF9)"
         }
       }
     }
