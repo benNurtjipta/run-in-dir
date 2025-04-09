@@ -2,7 +2,7 @@
   "name": "run-in-dir",
   "displayName": "Run in Dir",
   "description": "Run npm run dev from current file folder",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "benNurtjipta",
   "license": "MIT",
   "icon": "images/icon.png",
