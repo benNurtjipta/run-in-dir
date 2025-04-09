@@ -32,7 +32,7 @@
       "properties": {
         "run-in-dir.defaultCommand": {
           "type": "string",
-          "default": "npm run dev",
+          "default": "npm start",
           "enum": [
             "npm run dev",
             "npm start"
@@ -43,6 +43,21 @@
           "type": "string",
           "default": "#03EDF9",
           "description": "Button Color in HEX (e.g. #03EDF9)"
+        },
+        "run-in-dir.useCustomCommand": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use a custom shell command instead of the default one"
+        },
+        "run-in-dir.customCommand": {
+          "type": "string",
+          "default": "",
+          "description": "The custom shell command to run (only used if useCustomCommand is true)"
+        },
+        "run-in-dir.customLabel": {
+          "type": "string",
+          "default": "Run",
+          "description": "Label shown in the status bar when using a custom command"
         }
       }
     }

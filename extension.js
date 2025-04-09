@@ -40,7 +40,12 @@ function activate(context) {
       }
 
       const config = vscode.workspace.getConfiguration("run-in-dir");
+      const useCustomCommand = config.get("useCustomCommand");
+      const customCommand = config.get("customCommand");
       const defaultCommand = config.get("defaultCommand") || "npm run dev";
+
+      const commandToRun =
+        useCustomCommand && customCommand ? customCommand : defaultCommand;
 
       let terminal = vscode.window.terminals.find(
         (t) => t.name === "Run In Dir"
@@ -53,13 +58,15 @@ function activate(context) {
       }
 
       terminal.show();
-      terminal.sendText(`cd "${projectRoot}" && ${defaultCommand}`);
+      terminal.sendText(`cd "${projectRoot}" && ${commandToRun}`);
     }
   );
 
   context.subscriptions.push(runDevCommand);
 
   const config = vscode.workspace.getConfiguration("run-in-dir");
+  const useCustomCommand = config.get("useCustomCommand");
+  const customLabel = config.get("customLabel") || "Run";
   const defaultCommand = config.get("defaultCommand") || "npm run dev";
   const buttonColor = config.get("statusBarColor") || "#03EDF9";
 
@@ -68,9 +75,15 @@ function activate(context) {
     -1000
   );
 
-  button.text =
-    defaultCommand === "npm start" ? "$(play) Start" : "$(play) Dev";
-  button.tooltip = "Run configured npm script in project root";
+  // Set label based on configuration
+  if (useCustomCommand) {
+    button.text = `$(play) ${customLabel}`;
+  } else {
+    button.text =
+      defaultCommand === "npm start" ? "$(play) Start" : "$(play) Dev";
+  }
+
+  button.tooltip = "Run configured shell command in project root";
   button.command = "run-in-dir.runDev";
   button.color = buttonColor;
   button.show();
@@ -78,11 +91,22 @@ function activate(context) {
   context.subscriptions.push(button);
 
   vscode.workspace.onDidChangeConfiguration((e) => {
-    if (e.affectsConfiguration("run-in-dir.defaultCommand")) {
+    if (
+      e.affectsConfiguration("run-in-dir.defaultCommand") ||
+      e.affectsConfiguration("run-in-dir.useCustomCommand") ||
+      e.affectsConfiguration("run-in-dir.customLabel")
+    ) {
       const updatedConfig = vscode.workspace.getConfiguration("run-in-dir");
+      const useCustom = updatedConfig.get("useCustomCommand");
       const newCommand = updatedConfig.get("defaultCommand");
-      button.text =
-        newCommand === "npm start" ? "$(play) Start" : "$(play) Dev";
+      const newLabel = updatedConfig.get("customLabel") || "Run";
+
+      if (useCustom) {
+        button.text = `$(play) ${newLabel}`;
+      } else {
+        button.text =
+          newCommand === "npm start" ? "$(play) Start" : "$(play) Dev";
+      }
     }
 
     if (e.affectsConfiguration("run-in-dir.statusBarColor")) {
