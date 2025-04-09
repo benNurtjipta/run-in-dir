@@ -42,7 +42,7 @@ function activate(context) {
       const config = vscode.workspace.getConfiguration("run-in-dir");
       const useCustomCommand = config.get("useCustomCommand");
       const customCommand = config.get("customCommand");
-      const defaultCommand = config.get("defaultCommand") || "npm run dev";
+      const defaultCommand = config.get("defaultCommand");
 
       const commandToRun =
         useCustomCommand && customCommand ? customCommand : defaultCommand;
@@ -67,7 +67,7 @@ function activate(context) {
   const config = vscode.workspace.getConfiguration("run-in-dir");
   const useCustomCommand = config.get("useCustomCommand");
   const customLabel = config.get("customLabel") || "Run";
-  const defaultCommand = config.get("defaultCommand") || "npm run dev";
+  const defaultCommand = config.get("defaultCommand");
   const buttonColor = config.get("statusBarColor") || "#03EDF9";
 
   const button = vscode.window.createStatusBarItem(
@@ -75,13 +75,11 @@ function activate(context) {
     -1000
   );
 
-  // Set label based on configuration
-  if (useCustomCommand) {
-    button.text = `$(play) ${customLabel}`;
-  } else {
-    button.text =
-      defaultCommand === "npm start" ? "$(play) Start" : "$(play) Dev";
-  }
+  button.text = useCustomCommand
+    ? `$(play) ${customLabel}`
+    : defaultCommand === "npm start"
+    ? "$(play) Start"
+    : "$(play) Dev";
 
   button.tooltip = "Run configured shell command in project root";
   button.command = "run-in-dir.runDev";
@@ -101,12 +99,11 @@ function activate(context) {
       const newCommand = updatedConfig.get("defaultCommand");
       const newLabel = updatedConfig.get("customLabel") || "Run";
 
-      if (useCustom) {
-        button.text = `$(play) ${newLabel}`;
-      } else {
-        button.text =
-          newCommand === "npm start" ? "$(play) Start" : "$(play) Dev";
-      }
+      button.text = useCustom
+        ? `$(play) ${newLabel}`
+        : newCommand === "npm start"
+        ? "$(play) Start"
+        : "$(play) Dev";
     }
 
     if (e.affectsConfiguration("run-in-dir.statusBarColor")) {

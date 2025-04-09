@@ -32,7 +32,7 @@
       "properties": {
         "run-in-dir.defaultCommand": {
           "type": "string",
-          "default": "npm start",
+          "default": "npm run dev",
           "enum": [
             "npm run dev",
             "npm start"
